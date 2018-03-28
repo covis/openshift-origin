@@ -1,4 +1,8 @@
 This CHANGELOG.md file will contain the update log for the latest set of updates to the templates
+# UPDATES for Origin 3.9 - March 28, 2018
+
+1.  Changed paths to playbooks according the new structure in branch release-3.9 of https://github.com/openshift/openshift-ansible.
+2.  Changed openshift version to 3.9.
 
 # UPDATES for Origin 3.7 - February 19, 2018
 

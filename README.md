@@ -7,6 +7,7 @@ The master branch will now contain the most current release of OpenShift Origin 
 We will now have branches for the stable releases:
 - Release-3.6
 - Release-3.7
+- Release-3.9
 - etc.
 
 Bookmark [aka.ms/OpenShift](http://aka.ms/OpenShift) for future reference.
@@ -17,7 +18,7 @@ Additional documentation for deploying OpenShift in Azure can be found here: htt
 
 Change log located in CHANGELOG.md
 
-## OpenShift Origin 3.7 with Username / Password
+## OpenShift Origin 3.9 with Username / Password
 
 Due to some issues, this template does not enable the Service Catalog or the Template Service Broker.  We will enable this in a future update once the issue is resolved.
 

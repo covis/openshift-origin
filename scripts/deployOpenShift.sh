@@ -409,7 +409,7 @@ ansible_ssh_user=$SUDOUSER
 ansible_become=yes
 openshift_install_examples=true
 openshift_deployment_type=origin
-openshift_release=v3.7
+openshift_release=v3.9
 docker_udev_workaround=True
 openshift_use_dnsmasq=True
 openshift_master_default_subdomain=$ROUTING
@@ -508,13 +508,13 @@ EOF
 
 echo $(date) " - Cloning openshift-ansible repo for use in installation"
 
-runuser -l $SUDOUSER -c "git clone -b release-3.7 https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
+runuser -l $SUDOUSER -c "git clone -b release-3.9 https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
 
 echo $(date) " - Running network_manager.yml playbook"
 DOMAIN=`domainname -d`
 
 # Setup NetworkManager to manage eth0
-runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/openshift-node/network_manager.yml"
+runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/openshift-node/network_manager.yml"
 
 echo $(date) " - Setting up NetworkManager on eth0"
 # Configure resolv.conf on all hosts through NetworkManager
@@ -527,7 +527,7 @@ runuser -l $SUDOUSER -c "ansible all -b -m service -a \"name=NetworkManager stat
 # Initiating installation of OpenShift Container Platform using Ansible Playbook
 echo $(date) " - Installing OpenShift Container Platform via Ansible Playbook"
 
-runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml"
+runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/deploy-cluster.yml"
 
 echo $(date) " - Modifying sudoers"
 
@@ -645,9 +645,9 @@ then
 	echo $(date) "- Deploying Metrics"
 	if [ $AZURE == "true" ]
 	then
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic"
+		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic"
 	else
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True"
+		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True"
 	fi
 	if [ $? -eq 0 ]
 	then
@@ -666,9 +666,9 @@ then
 	echo $(date) "- Deploying Logging"
 	if [ $AZURE == "true" ]
 	then
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true"
+		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true"
 	else
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True"
+		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True"
 	fi
 	if [ $? -eq 0 ]
 	then
